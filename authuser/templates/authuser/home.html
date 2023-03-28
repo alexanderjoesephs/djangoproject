@@ -9,6 +9,7 @@
   </head>
   <body>
     <a href="{% url 'home' %}"><h3>Hello</h3></a>
+    <p>Updated permissions</p>
     {% if not user.is_authenticated %}
     <form method="post" action="{% url 'home' %}">
       {% csrf_token %}
