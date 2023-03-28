@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    <style>body{font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center;}</style>
+  </head>
+  <body>
+    <a href="{% url 'home' %}"><h3>Hello</h3></a>
+    {% if not user.is_authenticated %}
+    <form method="post" action="{% url 'home' %}">
+      {% csrf_token %}
+      <input placeholder="email" name="email" type="text">
+      <input placeholder="password" name="password" type="password">
+      <button type="submit">Login</button>
+    </form>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
+    {% endif %}
+    {% if message %}
+      {{message}}
+    {% endif %}
+  </body>
+</html>
