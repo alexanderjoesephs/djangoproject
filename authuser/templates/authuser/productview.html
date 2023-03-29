@@ -13,10 +13,10 @@
           <form class="form" method="post" action="{% url 'productview' id=product.id %}">
             {% csrf_token %}
             <div style="margin:10px;" class="form-group">
-              <input type="number" placeholder="Quantity" name="quantity" style="width:120px;" min="1" max="9">
+              <input type="number" placeholder="Quantity" name="quantity" style="width:100%;" min="1" max="9">
             </div>
             <div style="margin:10px;" class="form-group">
-              <select name="size" class="form-select" aria-label="Default select example" style="width:120px;">
+              <select name="size" class="form-select" aria-label="Default select example" style="width:100%;">
                 <option selected>Size</option>
                 <option value="XS">XS</option>
                 <option value="S">S</option>
@@ -26,7 +26,7 @@
               </select>
             </div>
             <div style="margin:10px;" class="form-group">
-              <button class="btn btn-light" style="width:120px;" type="submit">Add to cart</button>
+              <button class="btn btn-light" style="width:100%;" type="submit">Add to cart</button>
             </div>
           </form>
         </div>
