@@ -74,7 +74,9 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="in_cart")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="in_cart_item")
     quantity = models.IntegerField(default=1)
-    price_total = models.FloatField(blank=True)
+    size = models.CharField(max_length=32)
+
 
     def __str__(self):
         return f"{self.product} x{self.quantity} is in the cart"
+

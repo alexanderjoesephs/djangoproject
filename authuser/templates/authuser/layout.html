@@ -38,9 +38,26 @@
               </button>
               <div id="navbarCollapse" class="collapse navbar-collapse">
                   <ul class="nav navbar-nav">
+                    {% if not user.is_authenticated %}
+
                       <li class="nav-item">
                           <a href="{% url 'createaccount'%}" class="nav-link">Create Account</a>
                       </li>
+                    {% else %}
+                    <li class="nav-item dropdown">
+                      <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Your Cart</a>
+                      <div class="dropdown-menu">
+                        {% if users_items %}
+                          {% for item in users_items %}
+                            <a href="{% url 'productview' id=item.product.id %}" class="dropdown-item">{{item.product}}, {{item.size}} x{{item.quantity}}</a>
+                            <!--<div class="dropdown-divider"></div>-->
+                          {%endfor%}
+                        {% else %}
+                          <p class="dropdown-item">Cart currently empty</p>
+                        {%endif%}
+                      </div>
+                    </li>
+                    {% endif %}
                        <!--
                       <li class="nav-item">
                           <a href="#" class="nav-link">Profile</a>
