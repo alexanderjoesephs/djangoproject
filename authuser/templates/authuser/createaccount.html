@@ -1,28 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
-    <style>body{font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center;}</style>
-  </head>
-  <body>
+{% extends "authuser/layout.html" %}
+{% block body %}
     
     {% if not user.is_authenticated %}
-        <form method="post" action="{% url 'createaccount' %}">
+      <div style="text-align: center;">
+        <form class="form" method="post" action="{% url 'createaccount' %}">
         {% csrf_token %}
+          <div style="margin:10px;" class="form-group">
             <input placeholder="Enter email" name="email" type="text">
+          </div>
+          <div style="margin:10px;" class="form-group">
             <input placeholder="Enter password" name="password" type="password">
+          </div>
+          <div style="margin:10px;" class="form-group">
             <input placeholder="Confirm password" name="confirm_password" type="password">
-            <button type="submit">Register</button>
+          </div>
+          <div style="margin:10px;" class="form-group">
+            <button class="btn btn-light" type="submit">Register</button>
+          </div>
         </form>
+      </div>
     {% endif %}
     {% if user.is_authenticated %}
+      <div style="margin-left:40px;">
         <h3>Please <a href="{%url 'logout'%}">logout</a> before you create an account</h3>
+      </div>
     {% endif %}
     {%if message %}
         {{message}}
     {% endif %}
-  </body>
-</html>
+  
+
+  {% endblock %}

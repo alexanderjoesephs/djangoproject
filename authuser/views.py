@@ -6,9 +6,8 @@ from django.db import IntegrityError
 
 def home(request):
     if request.method == "GET":
-        #user = User.objects.create_user('lennon@thebeatles.com', 'johnpassword')
-        #user.save()
-        return render(request, "authuser/home.html")
+        
+        return render(request, "authuser/layout.html")
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
@@ -16,9 +15,9 @@ def home(request):
         if user is not None:
             print('found user')
             login(request, user)
-            return render(request, "authuser/home.html")
+            return render(request, "authuser/layout.html")
         else:
-            return render(request, "authuser/home.html", {"message":"couldn't find user account"})
+            return render(request, "authuser/layout.html", {"message":"couldn't find user account"})
         
 
 def logoutview(request):
@@ -41,4 +40,4 @@ def createaccount(request):
         except IntegrityError:
             return render(request, "authuser/createaccount.html", {"message":"email in use"})
         login(request, user)
-        return render(request, "authuser/home.html")
+        return render(request, "authuser/layout.html")
