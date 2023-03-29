@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from .models import User
+from .models import User, Product
 from django.db import IntegrityError
 
 def home(request):
+    products = Product.objects.all()
     if request.method == "GET":
         
-        return render(request, "authuser/layout.html")
+        return render(request, "authuser/home.html", {"products":products})
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
@@ -15,9 +16,9 @@ def home(request):
         if user is not None:
             print('found user')
             login(request, user)
-            return render(request, "authuser/layout.html")
+            return render(request, "authuser/home.html", {"products":products})
         else:
-            return render(request, "authuser/layout.html", {"message":"couldn't find user account"})
+            return render(request, "authuser/home.html", {"message":"couldn't find user account", "products":products})
         
 
 def logoutview(request):
@@ -40,4 +41,4 @@ def createaccount(request):
         except IntegrityError:
             return render(request, "authuser/createaccount.html", {"message":"email in use"})
         login(request, user)
-        return render(request, "authuser/layout.html")
+        return render(request, "authuser/home.html")
