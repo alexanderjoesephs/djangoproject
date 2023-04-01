@@ -1,0 +1,37 @@
+{% extends "authuser/layout.html" %}
+{% block body %}
+  <div style="max-width: 500px; margin: 0 auto;">
+    {%for item in users_items%}
+    
+    <div class="row align-items-center" style="margin-top:20px">
+      <div class="col">
+        <img src="{{item.product.image_link}}" style="width:100%">
+      </div>
+      <div class="col">{{item.product.name}}, {{item.size}} x{{item.quantity}}</div>
+      <div class="col">
+        <form class="form-group" method="post" action="{% url 'checkout' %}">
+        {% csrf_token %}
+        <input type="hidden" value="{{item.id}}" name="item_to_edit">
+        <select name="new_quantity" class="form-select" style="width:80%;margin:5px;">
+          <option  value="q">Quantity</option>
+          <option  value="0">0</option>
+          <option  value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+        </select>
+      
+        <button type="submit" style="width:80%; margin:5px" class="btn btn-light">Update</button>
+      </div>
+      
+        
+      </form>
+    </div>
+    {%endfor%}
+  </div>
+{% endblock %}

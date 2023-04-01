@@ -66,6 +66,7 @@ def productview(request, id):
         else:
             return render(request, "authuser/productview.html",{"product": product})
     if request.method=="POST":
+        form_message = "Please enter a valid size and quantity."
         user = request.user
         users_cart = Cart.objects.get(owner=user)
         users_items = CartItem.objects.filter(cart=users_cart)
@@ -74,6 +75,40 @@ def productview(request, id):
         size = request.POST["size"]
         cart = Cart.objects.get(owner=request.user)
         product = Product.objects.get(id=id)
-        cart_item = CartItem.objects.create(cart=cart, product=product, quantity=quantity, size=size)
-        print(cart_item)
+        if (quantity!='q' and size!='Size'):
+            quantity = int(quantity)
+            if(quantity>0 and quantity<10):
+                cart_item = CartItem.objects.create(cart=cart, product=product, quantity=quantity, size=size)
+                print(cart_item)
+            else:
+                return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "form_message":form_message})
+        else:
+            return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "form_message":form_message})
         return render(request, "authuser/productview.html",{"product": product, "users_items":users_items})
+
+
+def checkout(request):
+    if request.method=="GET":
+        if request.user.is_authenticated:
+            user = request.user
+            users_cart = Cart.objects.get(owner=user)
+            users_items = CartItem.objects.filter(cart=users_cart)
+            return render(request, "authuser/checkout.html", {"users_items":users_items})
+        else:
+            message = "Plesae log in or register to access the checkout" 
+            return render(request, "authuser/checkout.html", {"message": message})
+    if request.method=="POST":
+        if request.user.is_authenticated:
+            user = request.user
+            users_cart = Cart.objects.get(owner=user)
+            item_to_edit = request.POST["item_to_edit"]
+            new_quantity = request.POST["new_quantity"]
+            cartItemToChange = CartItem.objects.get(cart=users_cart, id=item_to_edit)
+            if new_quantity=="0":
+                cartItemToChange.delete()
+            elif new_quantity != "q":
+                cartItemToChange.quantity = new_quantity
+                cartItemToChange.save()
+            users_cart = Cart.objects.get(owner=user)
+            users_items = CartItem.objects.filter(cart=users_cart)
+            return render(request, "authuser/checkout.html", {"users_items":users_items})

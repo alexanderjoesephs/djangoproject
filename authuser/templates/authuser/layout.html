@@ -49,9 +49,10 @@
                       <div class="dropdown-menu">
                         {% if users_items %}
                           {% for item in users_items %}
-                            <a href="{% url 'productview' id=item.product.id %}" class="dropdown-item">{{item.product}}, {{item.size}} x{{item.quantity}}</a>
-                            <!--<div class="dropdown-divider"></div>-->
+                            <a href="{% url 'productview' id=item.product.id %}" class="dropdown-item">{{item.product.name}}, {{item.size}} x{{item.quantity}}</a>
                           {%endfor%}
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'checkout'%}">Checkout cart</a>
                         {% else %}
                           <p class="dropdown-item">Cart currently empty</p>
                         {%endif%}
