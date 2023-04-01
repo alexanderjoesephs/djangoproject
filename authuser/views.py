@@ -79,12 +79,12 @@ def productview(request, id):
             quantity = int(quantity)
             if(quantity>0 and quantity<10):
                 cart_item = CartItem.objects.create(cart=cart, product=product, quantity=quantity, size=size)
-                print(cart_item)
+                form_message = 'This item was added to your cart successfully.'
             else:
-                return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "form_message":form_message})
+                return render(request, "authuser/productview.html",{"product": product, "users_items":users_items})
         else:
             return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "form_message":form_message})
-        return render(request, "authuser/productview.html",{"product": product, "users_items":users_items})
+        return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "form_message":form_message})
 
 
 def checkout(request):
