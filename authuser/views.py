@@ -6,16 +6,16 @@ from django.db import IntegrityError
 
 def home(request):
     products = Product.objects.all()
-    
+    intro = True
 
     if request.method == "GET":
         if request.user.is_authenticated:
             user = request.user
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
-            return render(request, "authuser/home.html", {"products":products, "users_items":users_items})
+            return render(request, "authuser/home.html", {"products":products, "users_items":users_items, "intro":intro})
         else:
-            return render(request, "authuser/home.html", {"products":products})
+            return render(request, "authuser/home.html", {"products":products, "intro":intro})
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
@@ -25,9 +25,9 @@ def home(request):
             login(request, user)
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
-            return render(request, "authuser/home.html", {"products":products, "users_items":users_items})
+            return render(request, "authuser/home.html", {"products":products, "users_items":users_items, "intro":intro})
         else:
-            return render(request, "authuser/home.html", {"message":"couldn't find user account", "products":products})
+            return render(request, "authuser/home.html", {"message":"couldn't find user account", "products":products, "intro":intro})
         
 
 def logoutview(request):
@@ -112,3 +112,31 @@ def checkout(request):
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
             return render(request, "authuser/checkout.html", {"users_items":users_items})
+        
+def range(request, league):
+    if league=='All':
+        products = Product.objects.all()
+    else:
+        products = Product.objects.filter(league=league)
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            user = request.user
+            users_cart = Cart.objects.get(owner=user)
+            users_items = CartItem.objects.filter(cart=users_cart)
+            return render(request, "authuser/home.html", {"products":products, "users_items":users_items})
+        else:
+            return render(request, "authuser/home.html", {"products":products})
+        
+
+def timerange(request):
+    if request.method == "POST":
+        fromyear = request.POST["fromyear"]
+        toyear = request.POST["toyear"]
+        products = Product.objects.filter(year__gte=fromyear).filter(year__lte=toyear)
+        if request.user.is_authenticated:
+            user = request.user
+            users_cart = Cart.objects.get(owner=user)
+            users_items = CartItem.objects.filter(cart=users_cart)
+            return render(request, "authuser/home.html", {"products":products, "users_items":users_items})
+        else:
+            return render(request, "authuser/home.html", {"products":products})
