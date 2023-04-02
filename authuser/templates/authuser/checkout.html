@@ -25,13 +25,18 @@
           <option value="8">8</option>
           <option value="9">9</option>
         </select>
-      
-        <button type="submit" style="width:80%; margin:5px" class="btn btn-light">Update</button>
+        <button type="submit" style="width:80%; margin:5px;" class="btn btn-white">Update</button>
       </div>
       
         
       </form>
     </div>
     {%endfor%}
+    
+    <div class="row align-items-center" style="margin: 20px">
+      <button style="background-color: #50A5AC" class="btn text-white">Checkout cart £{{total_cost}}0</button>
+    </div>
+    
+    
   </div>
 {% endblock %}

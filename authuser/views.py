@@ -93,7 +93,13 @@ def checkout(request):
             user = request.user
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
-            return render(request, "authuser/checkout.html", {"users_items":users_items})
+            
+            total_cost = 0
+            for item in users_items:
+                price = item.product.price * item.quantity
+                total_cost = price + total_cost
+            
+            return render(request, "authuser/checkout.html", {"users_items":users_items,"total_cost":total_cost})
         else:
             message = "Plesae log in or register to access the checkout" 
             return render(request, "authuser/checkout.html", {"message": message})
@@ -111,7 +117,11 @@ def checkout(request):
                 cartItemToChange.save()
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
-            return render(request, "authuser/checkout.html", {"users_items":users_items})
+            total_cost = 0
+            for item in users_items:
+                price = item.product.price * item.quantity
+                total_cost = price + total_cost
+            return render(request, "authuser/checkout.html", {"users_items":users_items,"total_cost":total_cost})
         
 def range(request, league):
     if league=='All':
@@ -137,6 +147,7 @@ def timerange(request):
             user = request.user
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
+            
             return render(request, "authuser/home.html", {"products":products, "users_items":users_items})
         else:
             return render(request, "authuser/home.html", {"products":products})
