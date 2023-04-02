@@ -2,7 +2,6 @@
 {% block body %}
   <div style="max-width: 500px; margin: 0 auto;">
     {%for item in users_items%}
-    
     <div class="row align-items-center" style="margin-top:20px">
       <div class="col">
         <img src="{{item.product.image_link}}" style="width:100%">
@@ -25,18 +24,21 @@
           <option value="8">8</option>
           <option value="9">9</option>
         </select>
-        <button type="submit" style="width:80%; margin:5px;" class="btn btn-white">Update</button>
+        <button type="submit" style="width:80%; margin:5px;" class="btn btn-light">Update</button>
       </div>
       
         
       </form>
     </div>
     {%endfor%}
-    
+    {% if user.is_authenticated %}
     <div class="row align-items-center" style="margin: 20px">
-      <button style="background-color: #50A5AC" class="btn text-white">Checkout cart £{{total_cost}}0</button>
+      <form method="post" action="{%url 'your_orders'%}">
+        {% csrf_token %}
+        <button style="background-color: #50A5AC; width:100%" class="btn text-white">Checkout cart £{{total_cost}}0</button>
+      </form>
     </div>
-    
+    {%endif%}
     
   </div>
 {% endblock %}

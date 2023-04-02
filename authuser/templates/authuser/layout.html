@@ -63,11 +63,9 @@
                       </div>
                     </li>
                     {% endif %}
-                    <!--
-                      <li class="nav-item">
-                          <a href="#" class="nav-link">Profile</a>
-                      </li>
-                    -->
+                    
+                      
+                    
                       <li class="nav-item dropdown">
                           <a href="#" class="nav-link dropdown text-white" data-bs-toggle="dropdown" style="font-size: 130%">Browse by league</a>
                           <div class="dropdown-menu">
@@ -84,19 +82,31 @@
                         <div class="dropdown-menu">
                         <form class="form" method="post" action="{% url 'timerange' %}">
                           {% csrf_token %}
-                          <div class="form-group">
-                            <input class="form-control form-control-sm" style="width:200px; margin:10px;" placeholder="From" name="fromyear" type="number">
-                          </div>
-                          <div class="form-group">
-                            <input class="form-control form-control-sm" style="width:200px; margin:10px;" placeholder="To" name="toyear" type="number">
-                          </div>
-                          <div class="form-group">
-                            <button type="submit" class="btn btn-light" style="width:200px; margin:10px;">Search</button>
+                          <div class="m-2">
+                            <div class="form-group">
+                              <!--<input class="form-control form-control-sm" style="width:200px; margin:10px;" placeholder="From" name="fromyear" type="number">-->
+                              <label for="customRange1" class="form-label">From</label>
+                              <input type="range" class="form-range" value="1950" min="1950" max="2000" id="customRange1" name="fromyear" oninput="this.nextElementSibling.value = this.value">
+                              <output>1950</output>
+                            </div>
+                            <div class="form-group">
+                              <!--<input class="form-control form-control-sm" style="width:200px; margin:10px;" placeholder="To" name="toyear" type="number">-->
+                              <label for="customRange2" class="form-label">To</label>
+                              <input type="range" class="form-range" value="2000" min="1950" max="2000" id="customRange2" name="toyear" oninput="this.nextElementSibling.value = this.value">
+                              <output>2000</output>
+                            </div>
+                            <div class="form-group">
+                              <button type="submit" class="btn btn-light" style="width:200px; margin:10px;">Search</button>
+                            </div>
                           </div>
                         </form>
                         </div>
                       </li>
-                    
+                      {% if user.is_authenticated %}
+                      <li class="nav-item">
+                        <a href="{% url 'your_orders' %}" style="font-size: 130%" class="nav-link text-white">Your orders</a>
+                      </li>
+                      {% endif %}
                   </ul>
                   <ul class="nav navbar-nav ms-auto">
                       <li class="nav-item dropdown">
@@ -135,7 +145,7 @@
       </nav>    
     </div>
     {% if message %}
-      <div style="margin-left:40px">
+      <div class="m-4">
       {{message}}
       </div>
     {% endif %}

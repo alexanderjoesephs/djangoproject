@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from .models import User, Product, Cart, CartItem
+from .models import User, Product, Cart, CartItem, PastOrder, OrderItem
 from django.db import IntegrityError
 
 def home(request):
@@ -123,6 +123,32 @@ def checkout(request):
                 total_cost = price + total_cost
             return render(request, "authuser/checkout.html", {"users_items":users_items,"total_cost":total_cost})
         
+
+
+def your_orders(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            user = request.user
+            users_cart = Cart.objects.get(owner=user)
+            users_items = CartItem.objects.filter(cart=users_cart)
+            pastOrder = PastOrder.objects.create(ordered_by=user)
+            pastOrder.save()
+            for item in users_items:
+                orderItem = OrderItem.objects.create(pastOrder=pastOrder, product=item.product, quantity=item.quantity, size=item.size, ordered_at=pastOrder.ordered_at)
+                orderItem.save()
+            users_items = CartItem.objects.filter(cart=users_cart).delete()
+            users_cart = Cart.objects.get(owner=user)
+            users_items = CartItem.objects.filter(cart=users_cart)
+            return render(request, "authuser/message_about_project.html", {"users_items":users_items})
+        
+    if request.method == "GET":
+        user = request.user
+        users_cart = Cart.objects.get(owner=user)
+        users_items = CartItem.objects.filter(cart=users_cart)
+        pastOrders = PastOrder.objects.filter(ordered_by=user)
+        pastOrderItems = OrderItem.objects.filter(pastOrder__in=pastOrders)
+        return render(request, "authuser/your_orders.html", {"users_items":users_items, "pastOrderItems": pastOrderItems})
+    
 def range(request, league):
     if league=='All':
         products = Product.objects.all()

@@ -10,4 +10,5 @@ urlpatterns = [
     path('checkout', views.checkout, name="checkout"),
     path('league=<str:league>', views.range, name="range"),
     path('timerange', views.timerange, name="timerange"),
+    path('your_orders',views.your_orders, name="your_orders"),
 ]

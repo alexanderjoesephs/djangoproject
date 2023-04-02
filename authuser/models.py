@@ -80,3 +80,20 @@ class CartItem(models.Model):
     def __str__(self):
         return f"{self.product} x{self.quantity} is in the cart"
 
+class PastOrder(models.Model):
+    ordered_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users_order")
+    ordered_at = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return f"{self.owner}'s order"
+
+class OrderItem(models.Model):
+    pastOrder = models.ForeignKey(PastOrder, on_delete=models.CASCADE, related_name="in_order")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="in_order_item")
+    quantity = models.IntegerField(default=1)
+    size = models.CharField(max_length=32)
+    ordered_at = models.DateTimeField(default=datetime.now)
+
+
+    def __str__(self):
+        return f"{self.product} x{self.quantity} was ordered"

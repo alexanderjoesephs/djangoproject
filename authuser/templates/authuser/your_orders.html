@@ -1,0 +1,7 @@
+{% extends "authuser/layout.html" %}
+{% block body %}
+    
+    {% for item in pastOrderItems %}
+        <p class="m-4">{{item.product.club}} {{item.product.year}} was ordered on {{item.ordered_at}}</p>
+    {% endfor %}
+{% endblock %}
