@@ -97,3 +97,13 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product} x{self.quantity} was ordered"
+    
+class Review(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users_reviews")
+    content = models.CharField(max_length=50000)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="products_reviews")
+    rating = models.IntegerField(default=4)
+    written_at = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return f"{self.product} was give a {self.rating} star review by {self.author}"

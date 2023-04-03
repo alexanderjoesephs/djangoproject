@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from .models import User, Product, Cart, CartItem, PastOrder, OrderItem
+from .models import User, Product, Cart, CartItem, PastOrder, OrderItem, Review
 from django.db import IntegrityError
+import json
+from django.views.decorators.csrf import csrf_exempt
+
 
 def home(request):
     products = Product.objects.all()
@@ -21,7 +24,7 @@ def home(request):
         password = request.POST['password']
         user = authenticate(request, email=email, password=password)
         if user is not None:
-            print('found user')
+            
             login(request, user)
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
@@ -148,8 +151,13 @@ def your_orders(request):
         users_cart = Cart.objects.get(owner=user)
         users_items = CartItem.objects.filter(cart=users_cart)
         pastOrders = PastOrder.objects.filter(ordered_by=user)
-        pastOrderItems = OrderItem.objects.filter(pastOrder__in=pastOrders)
-        return render(request, "authuser/your_orders.html", {"users_items":users_items, "pastOrderItems": pastOrderItems})
+        pastOrderItems = OrderItem.objects.filter(pastOrder__in=pastOrders).order_by('-ordered_at')
+        users_reviews= Review.objects.filter(author=user)
+        products_reviewed = []
+        for review in users_reviews:
+            products_reviewed.append(review.product)
+        
+        return render(request, "authuser/your_orders.html", {"users_items":users_items, "pastOrderItems": pastOrderItems, "user":user, "products_reviewed": products_reviewed})
     
 def range(request, league):
     if league=='All':
@@ -179,3 +187,18 @@ def timerange(request):
             return render(request, "authuser/home.html", {"products":products, "users_items":users_items})
         else:
             return render(request, "authuser/home.html", {"products":products})
+        
+
+def review(request):
+    if request.method=="PUT":
+        data = json.loads(request.body)
+        content = data['content']
+        productid = data['productid']
+        rating = data['rating']
+        user = data['user']
+        author = User.objects.get(email=user)
+        product = Product.objects.get(pk=productid)
+        review = Review.objects.create(author=author, content=content, product=product, rating=rating)
+        review.save()
+        return HttpResponse(status=204)
+    

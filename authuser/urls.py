@@ -11,4 +11,5 @@ urlpatterns = [
     path('league=<str:league>', views.range, name="range"),
     path('timerange', views.timerange, name="timerange"),
     path('your_orders',views.your_orders, name="your_orders"),
+    path('review', views.review, name='review')
 ]
