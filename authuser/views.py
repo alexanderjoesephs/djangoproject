@@ -67,7 +67,20 @@ def productview(request, id):
             user = request.user
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
-            return render(request, "authuser/productview.html", {"product": product, "users_items":users_items})
+            #get reviews and create array to render stars
+            reviews = Review.objects.filter(product=product)
+            stars = "<span class='one fa fa-star checked'></span>"
+            """for review in reviews:
+                num = int(review.rating)
+                print(num)
+                s = []
+                for i in range(num):
+                    s.append('checked')
+                for i in range(5-num):
+                    s.append('unchecked')
+                stars.append(s)
+            print(stars)"""
+            return render(request, "authuser/productview.html", {"product": product, "users_items":users_items, "reviews":reviews,"stars":stars})
         else:
             return render(request, "authuser/productview.html",{"product": product})
     if request.method=="POST":
@@ -159,7 +172,7 @@ def your_orders(request):
         
         return render(request, "authuser/your_orders.html", {"users_items":users_items, "pastOrderItems": pastOrderItems, "user":user, "products_reviewed": products_reviewed})
     
-def range(request, league):
+def leaguerange(request, league):
     if league=='All':
         products = Product.objects.all()
     else:

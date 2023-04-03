@@ -51,5 +51,58 @@
       </div>
       {% endif %}
     </div>
+    <!--reviews section-->
+    {%for review in reviews%}
+    <div class="container renderStarsHere" style="justify-content:center; align-items: center;" >
+      
+    </div>
+    <div class="container" style="justify-content:space-evenly; align-items: center;" >
+      {{review.content}}
+      <p style="display:none;" class="rating" id="rating{{review.id}}">{{review.rating}}</p>
+    </div>
+    
+    {%endfor%}
   </div>
+  <script>
+    addEventListener("DOMContentLoaded", (event) => {
+      let list = document.querySelectorAll('.rating')
+      let stars = []
+      for(let i = 0; i<list.length;i++){
+        let starsToRender = parseInt(list[i].innerHTML);
+        stars.push(starsToRender)
+      }
+      console.log(stars)
+      let divList = document.querySelectorAll('.renderStarsHere')
+      console.log(divList)
+      for(let i=0;i<divList.length;i++){
+        
+        let starchecked = '<span class="one fa fa-star checked"></span>'
+        let starunchecked = '<span class="one fa fa-star"></span>'
+        
+        for(let j =0; j<stars[i]; j++){
+          divList[i].innerHTML = divList[i].innerHTML + starchecked;
+        } 
+        for(let j =stars[i]; j<5;j++){
+          divList[i].innerHTML = divList[i].innerHTML + starunchecked;
+        }
+      }
+
+
+      /*
+      starsToRender = parseInt(document.querySelector('#rating').innerHTML)
+      div = document.querySelector('#renderstarshere')
+      stars = document.createElement('div')
+      starchecked = '<span class="one fa fa-star checked"></span>'
+      starunchecked = '<span class="one fa fa-star"></span>'
+      stars.innerHTML = ''
+      for(let i=0;i<starsToRender;i++){
+        stars.innerHTML = stars.innerHTML + starchecked
+      }
+      for(let i=starsToRender; i<5;i++){
+        stars.innerHTML = stars.innerHTML + starunchecked
+      }
+      div.appendChild(stars);
+      */
+    })
+  </script>
 {% endblock %}
