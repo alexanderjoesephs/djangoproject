@@ -2,6 +2,167 @@
 {% block body %}
     
     {% for item in pastOrderItems %}
-        <p class="m-4">{{item.product.club}} {{item.product.year}} was ordered on {{item.ordered_at}}</p>
+        <div class="container" style="justify-content: center; align-items: center; padding:10px;">
+            <div class="item" style="margin:5px;">
+                <img src="{{item.product.image_link}}" width="200">
+            </div>
+            <div class="item" style="margin:5px;">
+                <p>{{item.product.name}} was ordered on {{item.ordered_at}}</p>
+                <button class="btn btn-light buttons" id="button{{item.id}}" style="margin:5px;">Leave Review</button>
+            </div>
+            <div class="container" style="justify-content: center; align-items: center; padding:10px;">
+                <textarea style="display:none; max-width:700px;" rows="4" placeholder="Leave your review here" class="textareas form-control" id="textarea{{item.id}}"></textarea>
+            </div>
+            <div class="container submits" style="display:none; justify-content: center; align-items: center; padding:10px;">
+                <button style="background-color: #50A5AC;" class="btn text-white" id="button{{item.id}}">Submit</button>
+                
+            </div>
     {% endfor %}
+            <div id="starrating" style="display:none;">
+                <span class="one fa fa-star checked"></span>
+                <span class="two fa fa-star checked"></span>
+                <span class="three fa fa-star checked"></span>
+                <span class="four fa fa-star checked"></span>
+                <span class="five fa fa-star"></span>
+            </div>   
+        <script>
+            addEventListener("DOMContentLoaded", (event) => {
+                  let one = false;
+                  let stars = document.querySelector('#starrating');
+                  let buttons = document.querySelectorAll('.buttons');
+                  let submits = document.querySelectorAll('.submits');
+                  let textareas = document.querySelectorAll('.textareas')
+                  for(let i =0;i<buttons.length;i++){
+                    buttons[i].addEventListener("click", (event)=>{
+                        
+                        submits[i].style.display = "flex";
+                        textareas[i].style.display = "flex";
+                        let s = submits[i]
+                        stars.style.display = "block";
+                        s.before(stars)
+                        for(let j=0;j<buttons.length;j++){
+                            if(j!==i){
+                                submits[j].style.display = "none";
+                                textareas[j].style.display = "none";
+                            }
+                        }
+                        
+                    })
+                    
+                  }
+                  document.querySelector('.one').addEventListener('click', (event)=>{
+                        if(!one){
+                            if(!document.querySelector('.one').classList.contains('checked')){
+                                document.querySelector('.one').classList.add('checked')
+                            }
+                            if(document.querySelector('.two').classList.contains('checked')){
+                                document.querySelector('.two').classList.remove('checked')
+                            }
+                            if(document.querySelector('.three').classList.contains('checked')){
+                                document.querySelector('.three').classList.remove('checked')
+                            }
+                            if(document.querySelector('.four').classList.contains('checked')){
+                                document.querySelector('.four').classList.remove('checked')
+                            }
+                            if(document.querySelector('.five').classList.contains('checked')){
+                                document.querySelector('.five').classList.remove('checked')
+                            }
+                            one = true
+                        }
+                        else{
+                            if(document.querySelector('.one').classList.contains('checked')){
+                                document.querySelector('.one').classList.remove('checked')
+                            }
+                            if(document.querySelector('.two').classList.contains('checked')){
+                                document.querySelector('.two').classList.remove('checked')
+                            }
+                            if(document.querySelector('.three').classList.contains('checked')){
+                                document.querySelector('.three').classList.remove('checked')
+                            }
+                            if(document.querySelector('.four').classList.contains('checked')){
+                                document.querySelector('.four').classList.remove('checked')
+                            }
+                            if(document.querySelector('.five').classList.contains('checked')){
+                                document.querySelector('.five').classList.remove('checked')
+                            }
+                            one = false
+                        }
+                    })
+                    document.querySelector('.two').addEventListener('click', (event)=>{
+                        if(!document.querySelector('.one').classList.contains('checked')){
+                            document.querySelector('.one').classList.add('checked')
+                        }
+                        if(!document.querySelector('.two').classList.contains('checked')){
+                            document.querySelector('.two').classList.add('checked')
+                        }
+                        if(document.querySelector('.three').classList.contains('checked')){
+                            document.querySelector('.three').classList.remove('checked')
+                        }
+                        if(document.querySelector('.four').classList.contains('checked')){
+                            document.querySelector('.four').classList.remove('checked')
+                        }
+                        if(document.querySelector('.five').classList.contains('checked')){
+                            document.querySelector('.five').classList.remove('checked')
+                        }
+                        one=false
+                    })
+                  document.querySelector('.three').addEventListener('click', (event)=>{
+                        if(!document.querySelector('.one').classList.contains('checked')){
+                            document.querySelector('.one').classList.add('checked')
+                        }
+                        if(!document.querySelector('.two').classList.contains('checked')){
+                            document.querySelector('.two').classList.add('checked')
+                        }
+                        if(!document.querySelector('.three').classList.contains('checked')){
+                            document.querySelector('.three').classList.add('checked')
+                        }
+                        if(document.querySelector('.four').classList.contains('checked')){
+                            document.querySelector('.four').classList.remove('checked')
+                        }
+                        if(document.querySelector('.five').classList.contains('checked')){
+                            document.querySelector('.five').classList.remove('checked')
+                        }
+                        one=false
+                    })
+                    document.querySelector('.four').addEventListener('click', (event)=>{
+                        if(!document.querySelector('.one').classList.contains('checked')){
+                            document.querySelector('.one').classList.add('checked')
+                        }
+                        if(!document.querySelector('.two').classList.contains('checked')){
+                            document.querySelector('.two').classList.add('checked')
+                        }
+                        if(!document.querySelector('.three').classList.contains('checked')){
+                            document.querySelector('.three').classList.add('checked')
+                        }
+                        if(!document.querySelector('.four').classList.contains('checked')){
+                            document.querySelector('.four').classList.add('checked')
+                        }
+                        if(document.querySelector('.five').classList.contains('checked')){
+                            document.querySelector('.five').classList.remove('checked')
+                        }
+                        one=false
+                    })
+                    document.querySelector('.five').addEventListener('click', (event)=>{
+                        if(!document.querySelector('.one').classList.contains('checked')){
+                            document.querySelector('.one').classList.add('checked')
+                        }
+                        if(!document.querySelector('.two').classList.contains('checked')){
+                            document.querySelector('.two').classList.add('checked')
+                        }
+                        if(!document.querySelector('.three').classList.contains('checked')){
+                            document.querySelector('.three').classList.add('checked')
+                        }
+                        if(!document.querySelector('.four').classList.contains('checked')){
+                            document.querySelector('.four').classList.add('checked')
+                        }
+                        if(!document.querySelector('.five').classList.contains('checked')){
+                            document.querySelector('.five').classList.add('checked')
+                        }
+                        one=false
+                    })
+                }
+            )
+
+        </script>
+    
 {% endblock %}

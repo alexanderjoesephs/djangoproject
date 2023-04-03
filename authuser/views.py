@@ -42,10 +42,12 @@ def createaccount(request):
         email = request.POST["email"]
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
+        name = request.POST["username"]
         if password!=confirm_password:
             return render(request, "authuser/createaccount.html", {"message":"passwords don't match"})
         try:
             user = User.objects.create_user(email, password)
+            user.name = name
             user.save()
             cart = Cart.objects.create(owner=user)
             cart.save()
