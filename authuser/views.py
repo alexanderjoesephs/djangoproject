@@ -63,26 +63,19 @@ def createaccount(request):
 def productview(request, id):
     if request.method=="GET":
         product = Product.objects.get(id=id)
+        #get reviews and create array to render stars
+        reviews = Review.objects.filter(product=product)
+        
         if request.user.is_authenticated:
             user = request.user
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
-            #get reviews and create array to render stars
-            reviews = Review.objects.filter(product=product)
-            stars = "<span class='one fa fa-star checked'></span>"
-            """for review in reviews:
-                num = int(review.rating)
-                print(num)
-                s = []
-                for i in range(num):
-                    s.append('checked')
-                for i in range(5-num):
-                    s.append('unchecked')
-                stars.append(s)
-            print(stars)"""
-            return render(request, "authuser/productview.html", {"product": product, "users_items":users_items, "reviews":reviews,"stars":stars})
+            
+            
+            
+            return render(request, "authuser/productview.html", {"product": product, "users_items":users_items, "reviews":reviews})
         else:
-            return render(request, "authuser/productview.html",{"product": product})
+            return render(request, "authuser/productview.html",{"product": product, "reviews":reviews})
     if request.method=="POST":
         form_message = "Please enter a valid size and quantity."
         user = request.user
@@ -93,16 +86,17 @@ def productview(request, id):
         size = request.POST["size"]
         cart = Cart.objects.get(owner=request.user)
         product = Product.objects.get(id=id)
+        reviews = Review.objects.filter(product=product)
         if (quantity!='q' and size!='Size'):
             quantity = int(quantity)
             if(quantity>0 and quantity<10):
                 cart_item = CartItem.objects.create(cart=cart, product=product, quantity=quantity, size=size)
                 form_message = 'This item was added to your cart successfully.'
             else:
-                return render(request, "authuser/productview.html",{"product": product, "users_items":users_items})
+                return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "reviews":reviews})
         else:
-            return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "form_message":form_message})
-        return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "form_message":form_message})
+            return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "form_message":form_message, "reviews":reviews})
+        return render(request, "authuser/productview.html",{"product": product, "users_items":users_items, "form_message":form_message, "reviews":reviews})
 
 
 def checkout(request):
@@ -215,3 +209,9 @@ def review(request):
         review.save()
         return HttpResponse(status=204)
     
+
+"""
+Reviews are only passed to the productview if accessed via get
+An empty review can be posted - use js to stop the put request being made if ta is empty
+Fix the bug with timezones 
+"""

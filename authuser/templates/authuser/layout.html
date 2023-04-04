@@ -29,6 +29,15 @@
 
       .checked{color: #50A5AC;}
 
+      hr {  
+        
+        width:95%;
+        
+        
+        margin-left: auto;
+        margin-right: auto;
+      }
+
     </style>
   </head>
   <body>
@@ -121,11 +130,11 @@
                               <form class="form" method="post" action="{% url 'home' %}">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                  <input class="form-control form-control-sm" style="width:100%; margin-top:5px; margin-bottom:5px;" placeholder="email" name="email" type="text">
+                                  <input class="form-control form-control-sm" style="width:100%; margin-top:5px; margin-bottom:5px;" placeholder="email" value="demo@mail.com" name="email" type="text">
                                 </div>
                                 <div class="form-group">
                                   
-                                  <input style="width:100%; margin-top:5px; margin-bottom:5px;" class="form-control form-control-sm" placeholder="password" name="password" type="password">
+                                  <input style="width:100%; margin-top:5px; margin-bottom:5px;" class="form-control form-control-sm" placeholder="password" name="password" value="demoword" type="password">
                                 </div>
                                 <div class="form-group">
                                   <button type="submit" class="btn btn-light" style="width:100%; margin-top:5px; margin-bottom:5px;">Login</button>
