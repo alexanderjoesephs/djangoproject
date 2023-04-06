@@ -1,6 +1,6 @@
 {% extends "authuser/layout.html" %}
 {% block body %}
-  <div  >
+  <div>
     
     <div class="container" style="justify-content:space-evenly; align-items: center; margin-bottom:30px" >
       <div class="item">
@@ -51,9 +51,11 @@
       </div>
       {% endif %}
     </div>
+    {%if reviews%}
     <div class="container" style="justify-content:center; align-items: center; margin-bottom:10px" >
       <h3>Customer reviews for {{product.name}}</h3>
     </div>
+    {%endif%}
     <!--reviews section-->
     {%for review in reviews%}
     <div class="container" style="justify-content:center; align-items: center; margin-bottom:10px" >

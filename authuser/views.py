@@ -63,8 +63,9 @@ def createaccount(request):
 def productview(request, id):
     if request.method=="GET":
         product = Product.objects.get(id=id)
-        #get reviews and create array to render stars
+        #get reviews
         reviews = Review.objects.filter(product=product)
+        
         
         if request.user.is_authenticated:
             user = request.user
@@ -110,8 +111,11 @@ def checkout(request):
             for item in users_items:
                 price = item.product.price * item.quantity
                 total_cost = price + total_cost
-            
-            return render(request, "authuser/checkout.html", {"users_items":users_items,"total_cost":total_cost})
+            cart_empty = False
+            if not CartItem.objects.filter(cart=users_cart):
+                print('cart empty')
+                cart_empty = True
+            return render(request, "authuser/checkout.html", {"users_items":users_items,"total_cost":total_cost, "cart_empty":cart_empty})
         else:
             message = "Plesae log in or register to access the checkout" 
             return render(request, "authuser/checkout.html", {"message": message})
@@ -130,10 +134,14 @@ def checkout(request):
             users_cart = Cart.objects.get(owner=user)
             users_items = CartItem.objects.filter(cart=users_cart)
             total_cost = 0
+            cart_empty = False
+            if not CartItem.objects.filter(cart=users_cart):
+                print('cart empty')
+                cart_empty = True
             for item in users_items:
                 price = item.product.price * item.quantity
                 total_cost = price + total_cost
-            return render(request, "authuser/checkout.html", {"users_items":users_items,"total_cost":total_cost})
+            return render(request, "authuser/checkout.html", {"users_items":users_items,"total_cost":total_cost, "cart_empty":cart_empty})
         
 
 
@@ -163,7 +171,9 @@ def your_orders(request):
         products_reviewed = []
         for review in users_reviews:
             products_reviewed.append(review.product)
-        
+        no_orders = False
+        if not PastOrder.objects.filter(ordered_by=user):
+            no_orders = True
         return render(request, "authuser/your_orders.html", {"users_items":users_items, "pastOrderItems": pastOrderItems, "user":user, "products_reviewed": products_reviewed})
     
 def leaguerange(request, league):

@@ -31,7 +31,7 @@
       </form>
     </div>
     {%endfor%}
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and users_items%}
     <div class="row align-items-center" style="margin: 20px">
       <form method="post" action="{%url 'your_orders'%}">
         {% csrf_token %}
@@ -39,6 +39,9 @@
       </form>
     </div>
     {%endif%}
+    {% if not users_items %}
+      <div style="margin: 20px; text-align: center;"><p>Your shopping cart is empty.<br><a href ="{%url 'home'%}">Click here</a> to browse our full selection of kits.</p></div>
+    {% endif %}
     
   </div>
 {% endblock %}

@@ -1,8 +1,8 @@
 {% extends "authuser/layout.html" %}
 {% block body %}
-    {%if reviews_exist %}
+    
         <h1 style="display:none;" id="user">{{user}}</h1>
-    {%endif%}
+    
     {% for item in pastOrderItems %}
         
         <div class="container" style="justify-content: center; align-items: center; padding:10px;">
@@ -27,6 +27,9 @@
                 <p style="display:none;" id="product{{item.id}}">{{item.product.id}}</p>
             </div>
     {% endfor %}
+    {% if not pastOrderItems %}
+        <div style="margin: 20px; text-align: center;"><p>You haven't ordered any items.<br><a href ="{%url 'home'%}">Click here</a> to browse our full selection of kits.</p></div>
+    {% endif %}
             <div id="starrating" style="display:none;">
                 <span class="one fa fa-star checked"></span>
                 <span class="two fa fa-star checked"></span>
@@ -91,7 +94,7 @@
                         console.log(submitsdivtohide)
                         let user = document.querySelector('#user').innerHTML
                         const csrftoken = getCookie('csrftoken');
-                        if(textareawithcontent!==""){
+                        //if(textareawithcontent!==""){
                             await fetch('../authuser/review',{
                                 method: 'PUT',
                                 headers: {'X-CSRFToken': csrftoken},
@@ -113,7 +116,7 @@
                                 p.style.margin = "5px"
                                 buttonclicked.before(p)
                             })
-                        }
+                        //}
 
                     })
                   }
